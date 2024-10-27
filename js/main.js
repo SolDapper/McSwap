@@ -8826,6 +8826,18 @@ $(window).on('load', async function() {
     // instructions array ****************************************************************
 
     // build tx **************************************************************************
+    
+    // let dev = instructions;
+    // let dev_messageV0 = new solanaWeb3.TransactionMessage({
+    //     payerKey: provider.publicKey,
+    //     recentBlockhash: (await connection.getLatestBlockhash('confirmed')).blockhash,
+    //     instructions: instructions,
+    // }).compileToV0Message([lookupTableAccount]);
+    // let dev_initializeSwapTx = new solanaWeb3.VersionedTransaction(dev_messageV0);
+    // dev_initializeSwapTx=dev_initializeSwapTx.serialize();
+    // dev_initializeSwapTx=Buffer.from(dev_initializeSwapTx).toString("base64");
+    // console.log(dev_initializeSwapTx);
+    
     let priority = $("#priority_spl").val(); 
     instructions.unshift(solanaWeb3.ComputeBudgetProgram.setComputeUnitLimit({units:await getComputeLimit(instructions,lookupTableAccount)}));
     instructions.unshift(solanaWeb3.ComputeBudgetProgram.setComputeUnitPrice({microLamports:await getPriorityFeeEstimate(conf.cluster,priority,instructions,lookupTableAccount)}));
@@ -8836,7 +8848,7 @@ $(window).on('load', async function() {
     }).compileToV0Message([lookupTableAccount]);
     let initializeSwapTx = new solanaWeb3.VersionedTransaction(messageV0);
     // build tx **************************************************************************
-    
+
     // do it *****************************************************************************
     try {
       let signedTx = await provider.signTransaction(initializeSwapTx);
